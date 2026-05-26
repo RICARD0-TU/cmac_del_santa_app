@@ -7,6 +7,7 @@ extension AuthSessionMapper on AuthSessionDto {
       userId: userId,
       accessToken: accessToken,
       refreshToken: refreshToken,
+      expiresAt: expiresAt,
     );
   }
 }

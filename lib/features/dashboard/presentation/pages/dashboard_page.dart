@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../../shared/design_system/cards/financial_summary_card.dart';
 import '../../../../shared/design_system/financial_widgets/account_balance_tile.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final displayName = authState.user?.fullName.isNotEmpty == true
+        ? authState.user!.fullName
+        : 'Cliente CMAC';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppConstants.appName),
@@ -23,13 +30,23 @@ class DashboardPage extends StatelessWidget {
             onPressed: () {},
             icon: const Icon(Icons.person_outline),
           ),
+          IconButton(
+            tooltip: 'Cerrar sesion',
+            onPressed: () => ref.read(authProvider.notifier).logout(),
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
-          children: const [
-            FinancialSummaryCard(
+          children: [
+            Text(
+              'Hola, $displayName',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16),
+            const FinancialSummaryCard(
               title: 'Saldo consolidado',
               amount: 'S/ 8,420.00',
               subtitle: 'Actualizado hace unos instantes',

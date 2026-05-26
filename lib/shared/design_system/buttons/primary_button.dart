@@ -5,16 +5,26 @@ class PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.isLoading = false,
     super.key,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    final child = icon == null
+    final child = isLoading
+        ? const SizedBox.square(
+            dimension: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          )
+        : icon == null
         ? Text(label)
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
